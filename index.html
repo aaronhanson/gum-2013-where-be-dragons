@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/sans-serif.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+        <style>
+            .reveal {
+                font-family: "Open Sans", sans-serif;
+            }
+        </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+<div class="slides">
+    <section>
+        <h2>
+    <br>
+</h2>
+<h2>
+    <br>
+</h2>
+<h1>
+    <span>where be dragons</span>
+    </h1>
+<h3>pragmatic grails development</h3>
+<div>
+        <br>
+    </div>
+    <div>
+        <a href="http://groovy.mn">GroovyMN</a> August 2013</div>
+        <div>
+            <a href="http://twitter.com/aaronhanson">@aaronhanson</a>
+</div>
+
+</section>
+    <section>
+        <h2>
+            <br>
+        </h2>
+<div>
+<img src="http://i.imgur.com/Ru1pHC1.jpg">
+        <br>
+</div>
+    </section>
+    <section>
+        <h3>Uses For Grails</h3>
+<p>
+<br>
+    </p>
+<p>
+<b>Rapid Protoype Development</b>
+</p>
+<p>grails generate-all</p>
+<p>
+<br>
+    </p>
+<p>
+<b>Enterprise Development</b>
+</p>
+<p>grails install-templates</p>
+<p>grails create-controller</p>
+</section>
+<section>
+    <h3>setProperties() &amp; command objects</h3>
+<div class="fragment" data-fragment-index="0">
+<p>
+<a href="http://grails.org/doc/latest/guide/single.html#dataBinding">DataBinding Docs Link</a>
+</p>
+<pre><code>def user = User.get(id)</code><code>user.properties = params</code></pre>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>slightly better
+</p>
+<pre><code>def userCommand = new UserCommand(params)</code><code>def user = User.get(id) // still insecure probably</code><code>bindData(user, params)</code></pre>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p>
+<br>
+</p>
+<p>Grails 2.3 (new, but similar)</p>
+<pre><code>@Transactional</code><code>def update(User user) {</code><code>    ....</code><code>    user.save flush:true</code><code>    ....
+}
+</code></pre>
+</div>
+<br>
+</section>
+<section>
+    <h3>Fat Controllers</h3>
+<div>
+    <br>
+</div>
+<div>
+Not always a bad thing.</div>
+<div>
+<br>
+</div>
+<div>Prototyping or future legacy code?</div>
+<div>
+<br>
+</div>
+<div>Is it used anywhere else?</div>
+<div>Maybe OK then. Refactor later.</div>
+<div>
+<br>
+</div>
+<div>
+<br>
+</div>
+<div>In larger applications it's unlikely to be a good thing.</div>
+</section>
+<section>
+    <h3>Making Database Calls In The View Layer</h3>
+<div class="fragment" data-fragment-index="0">
+<p>
+<font style="font-size: 24px;">Prototyping you might do this:</font>
+</p>
+<pre><code>&lt;g:select name="states" from="${State.list()}"/&gt;</code></pre>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>
+<font style="font-size: 24px;">But you should probably do this instead:</font>
+</p>
+<pre><code>class FooController {</code><code>    def list() {</code><code>        // ...</code><code>   &nbsp;    [states: States.list()]</code><code>    }</code><code>}</code><code><br></code><code>&lt;g:select name="states" from="${states}"/&gt;</code></pre>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p>
+<br>
+</p>
+<p>GOTCHA!</p>
+<pre><code> &lt;g:each in="${customer.phoneNumbers.sort()}" var="phoneNumber"&gt;</code></pre>
+</div>
+<br>
+</section>
+<section>
+    <h3>GSPs</h3>
+<p>
+    <br>
+</p>
+<p>Use more templates</p>
+<p>Use more taglibs</p>
+<p>
+<br>
+</p>
+<p>Be mindful of the need to</p>
+<p>.encodeAsHTML()</p>
+<p>.encodeAsURL()</p>
+<p>
+<br>
+</p>
+<p>g:* tags will do it for you</p>
+<p>roll your own or output from model directly,</p>
+<p>&nbsp;you're own your own</p>
+</section>
+<section>
+    <h3>Domain vs Concept&nbsp;</h3>
+<h3>Controllers/Services</h3>
+<p>
+<br>
+</p>
+<p>
+<b>OK For CRUD Applications</b>
+</p>
+<p>ProductController</p>
+<p>ProductService</p>
+<p>Product</p>
+<p>
+<br>
+</p>
+<p>
+<b>Better For Other Applications</b>
+</p>
+<p>CatalogController</p>
+<p>ShoppingService</p>
+</section>
+<section>
+    <h3>Making everything a service</h3>
+<p>You're lazy. So am I.</p>
+<p>
+    <br>
+</p>
+<p>Why do we often create services for everything?</p>
+<pre><code>class FooService {</code><code>    def barService</code><code>    ...</code><code>} </code></pre>
+<p>
+<br>
+</p>
+<p>Not everything needs to be a service.&nbsp;</p>
+<p>Libraries with good old fashioned functions are OK too.</p>
+<p>src/groovy</p>
+<p>
+<br>
+</p>
+<p>Try to keep your app out of your libraries.</p>
+</section>
+<section>
+    <h3>smart domains</h3>
+<p>Quit using your domain classes as services.</p>
+<p>
+    <br>
+</p>
+<p>Domain instances should operate on the things they know about.</p>
+<p>
+<span>
+    <br>
+</span>
+</p>
+<p>
+<span>If you need to look up information or do more logic, use a service.</span>
+</p>
+<p>Services are good to funnel calls and add things like caching.</p>
+<p>
+<br>
+</p>
+<p>Think about DomainClass.* as DB.*<span>&nbsp;</span>
+</p>
+<pre><code>Foo.executeQuery("select * from Bar where id = 1")</code></pre>
+<p>Doesn't have anything related to Foo. Smell.</p>
+</section>
+<section>
+    <h3>Injecting services in your domains</h3>
+<p>
+    <br>
+</p>
+<p>Why?</p>
+<p>Is it really a service or is it a library?</p>
+<p>Perhaps you're trying to do too much?</p>
+<p>
+<br>
+</p>
+<p>Testing can be difficult</p>
+<p>
+<br>
+</p>
+<p>Code coupling possibility higher</p>
+</section>
+<section>
+    <h3>Making Everything Transactional</h3>
+<div>
+<br>
+</div>
+<div>
+    <br>
+</div>
+<div>
+    <br>
+</div>
+<p class="fragment" data-fragment-index="0">
+    <font style="font-size: 72px;">Stop it!</font>
+</p>
+<div>
+    <br>
+</div>
+</section>
+    <section>
+        <h3>custom urlmappings</h3>
+<div>
+        <br>
+    </div>
+<div>
+    <b>&lt;g:link&gt;</b>
+</div>
+<div>doesn't always do what you think if you have</div>
+<div>multiple mappings to the same thing</div>
+<div>
+<br>
+</div>
+<div>
+<div style="font-size: 30px; font-style: normal; font-variant: normal;">order is important, as is length</div>
+<div style="font-size: 30px; font-style: normal; font-variant: normal;">naming them can help</div>
+<div style="font-size: 30px; font-style: normal; font-variant: normal;">
+<br>
+</div>
+<div style="font-size: 30px; font-style: normal; font-variant: normal;">Be careful with relative and absolute links<span>.</span>
+</div>
+<div style="font-size: 30px; font-style: normal; font-variant: normal;">
+<span>
+    <br>
+</span>
+</div>
+<div style="font-size: 30px; font-style: normal; font-variant: normal;">You'll probably be deployed behind a reverse proxy</div>
+<div style="font-size: 30px; font-style: normal; font-variant: normal;">and can run into issues with link generation.</div>
+</div>
+</section>
+<section>
+    <h3>testing</h3>
+<p>
+    <br>
+</p>
+<p>phases vs test type</p>
+<p>
+<br>
+</p>
+<p>unit - fast</p>
+<p>integration - slow</p>
+<p>functional - slow</p>
+<p>
+<br>
+</p>
+<p>Quit writing unitegration tests</p>
+<p>
+<font color="#666666">(yes I made up a word)</font>
+</p>
+</section>
+<section>
+    <h3>dbcreate vs migrations</h3>
+<div>dbcreate</div>
+<div>great for development</div>
+<div>painful for QA (w/o bootstrap)</div>
+<div>careful with create/update options vs create-drop</div>
+<div>
+    <br>
+</div>
+<div>migrations are better for:</div>
+<div>deployment</div>
+<div>keeping developers in sync</div>
+<div>making sure that you don't forget something</div>
+<div>(although you still could)</div>
+<div>
+<br>
+</div>
+<div>If you can choose, just do auto-migration.</div>
+<div>It's just plain easier than running them separately.</div>
+</section>
+<section>
+    <h3>Time Left?</h3>
+<p>
+    <br>
+</p>
+<p>Package naming/Plugins</p>
+<p>
+<br>
+</p>
+<p>Questions/Heckling?</p>
+</section>
+</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: false,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/leap/leap.js', async: true }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
