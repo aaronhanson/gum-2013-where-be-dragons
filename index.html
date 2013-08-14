@@ -150,7 +150,8 @@ Not always a bad thing.</div>
 <p>
 <font style="font-size: 24px;">But you should probably do this instead:</font>
 </p>
-<pre><code>class FooController {</code><code>    def list() {</code><code>        // ...</code><code>   &nbsp;    [states: States.list()]</code><code>    }</code><code>}</code><code><br></code><code>&lt;g:select name="states" from="${states}"/&gt;</code></pre>
+<pre><code>class FooController {</code><code>    def list() {</code><code>        // ...</code><code>   &nbsp;    [states: States.list()]</code><code>    }</code><code>}</code></pre>
+<pre><code>&lt;g:select name="states" from="${states}"/&gt;</code></pre>
 </div>
 <div class="fragment" data-fragment-index="2">
 <p>
@@ -242,7 +243,7 @@ Not always a bad thing.</div>
 </p>
 <p>Think about DomainClass.* as DB.*<span>&nbsp;</span>
 </p>
-<pre><code>Foo.executeQuery("select * from Bar where id = 1")</code></pre>
+<pre><code>Foo.executeQuery('select * from Bar where id = 1')</code></pre>
 <p>Doesn't have anything related to Foo. Smell.</p>
 </section>
 <section>
